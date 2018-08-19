@@ -274,8 +274,11 @@ if [[ ("$conductor_install" == "y" || "$conductor_install" == "Y") ]]; then
   
   screen -S feed -dm conductor feed
   screen -S switchover -dm conductor kill-switch -n 2
+  
+  #Delete bash history afterwards to make the adding key operation safe.
+  printf '$whoamipass\n' | sudo cat /dev/null > ~/.bash_history
+  
 fi
 
 
-  
 echo "Installation complete, Steemd node and everything else should now be up and running!"
