@@ -164,11 +164,7 @@ if [[ ("$UFW" == "y" || "$UFW" == "Y" || "$UFW" == "") ]]; then
 	ufw --force enable >> $LOG_FILE 2>&1
 fi
 
-if [[ ("$mem_run" == "y" || "$mem_run" == "Y") ]]; then
-  $sharedfiledir = /dev/shm
-else
-  $sharedfiledir = /home/$whoami/.steemd/blockchain
-fi
+
 
 decho "Create user $whoami"
 #desactivate trap only for this command
@@ -177,7 +173,7 @@ getent passwd $whoami > /dev/null 2&>1
 
 if [ $? -ne 0 ]; then
 	trap 'error ${LINENO}' ERR
-	useradd -m -p $whoami $whoamipass >> $LOG_FILE 2>&1
+	adduser --disabled-password --gecos "" $whoami >> $LOG_FILE 2>&1
 else
 	trap 'error ${LINENO}' ERR
 fi
@@ -190,7 +186,7 @@ chown -R $whoami:$whoami /home/$whoami/steem >> $LOG_FILE 2>&1
 
 cd /home/$whoami/steem
 
-git checkout witver
+git checkout $witver
 git submodule update --init --recursive
 cmake -DENABLE_CONTENT_PATCHING=OFF -DLOW_MEMORY_NODE=ON CMakeLists.txt
 
@@ -206,6 +202,11 @@ pkill -SIGINT steemd
 cd /home/$whoami/.steemd/
 rm -R blockchain && mkdir blockchain >> $LOG_FILE 2>&1
 
+if [[ ("$mem_run" == "y" || "$mem_run" == "Y") ]]; then
+  $sharedfiledir = /dev/shm
+else
+  $sharedfiledir = /home/$whoami/.steemd/blockchain
+fi
 
 echo 'Creating config.ini ...'
 
