@@ -190,7 +190,7 @@ git checkout $witver
 git submodule update --init --recursive
 cmake -DENABLE_CONTENT_PATCHING=OFF -DLOW_MEMORY_NODE=ON CMakeLists.txt
 
-make -j (grep -c ^processor /proc/cpuinfo)
+make -j $nproc
 
 cd /home/$whoami/steem/programs/steemd
 
