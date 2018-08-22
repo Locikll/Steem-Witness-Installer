@@ -136,9 +136,6 @@ apt-get install -y htop >> $LOG_FILE 2>&1
 pip3 install steem >> $LOG_FILE 2>&1
 pip3 install jinja2 >> $LOG_FILE 2>&1
 
-#Make sure pip3/python3 & pip/python are synonomous
-alias python='/usr/bin/python3.5'
-alias pip='/usr/bin/pip3'
 . ~/.bashrc
 
 if [[ ("$install_fail2ban" == "y" || "$install_fail2ban" == "Y" || "$install_fail2ban" == "") ]]; then
@@ -194,10 +191,14 @@ make -j $nproc
 
 cd /home/$whoami/steem/programs/steemd
 
-./steemd
+screen -S steemdinit -dm /home/$whoami/steem/programs/steemd/steemd
 
 sleep 30
 pkill -SIGINT steemd
+killall steemd
+
+screen -X -S steemdinit quit
+mv /root/.steemd /home/firepower/
 
 cd /home/$whoami/.steemd/
 rm -R blockchain && mkdir blockchain >> $LOG_FILE 2>&1
