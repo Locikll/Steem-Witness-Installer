@@ -194,8 +194,8 @@ cd /home/$whoami/steem/programs/steemd
 screen -S steemdinit -dm /home/$whoami/steem/programs/steemd/steemd
 
 sleep 30
+
 pkill -SIGINT steemd
-killall steemd
 
 screen -X -S steemdinit quit
 mv /root/.steemd /home/firepower/
