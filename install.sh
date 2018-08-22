@@ -204,9 +204,9 @@ cd /home/$whoami/.steemd/
 rm -R blockchain && mkdir blockchain >> $LOG_FILE 2>&1
 
 if [[ ("$mem_run" == "y" || "$mem_run" == "Y") ]]; then
-  $sharedfiledir = /dev/shm
+  sharedfiledir='/dev/shm'
 else
-  $sharedfiledir = /home/$whoami/.steemd/blockchain
+  sharedfiledir='/home/$whoami/.steemd/blockchain'
 fi
 
 echo 'Creating config.ini ...'
@@ -246,7 +246,7 @@ private-key=$key
 EOF
 
 echo 'Downloading blocklog from gtg.steem.house/get/blockchain/ ... (THIS MIGHT TAKE A LONG TIME)'
-cd /home/$whoami/steem/programs/steemd/blockchain
+cd /home/$whoami/.steemd/blockchain/
 wget https://gtg.steem.house/get/blockchain/block_log
 
 #Reown everything to user
