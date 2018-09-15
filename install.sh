@@ -170,7 +170,7 @@ getent passwd $whoami > /dev/null 2&>1
 
 if [ $? -ne 0 ]; then
 	trap 'error ${LINENO}' ERR
-	adduser --disabled-password --gecos "" $whoami >> $LOG_FILE 2>&1
+	printf '$whoamipass\n$whoamipass\n' | adduser --gecos "" $whoami >> $LOG_FILE 2>&1
 else
 	trap 'error ${LINENO}' ERR
 fi
